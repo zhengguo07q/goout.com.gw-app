@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 
-	"gw-app/helpers"
+	"gw-app/utility"
 	"gw-app/models"
 	"gw-app/system"
 )
@@ -75,11 +75,11 @@ func Subscribe(c *gin.Context) {
 }
 
 func sendActiveEmail(subscriber *models.Subscriber) error {
-	uuid := helpers.UUID()
+	uuid := utility.UUID()
 	duration, _ := time.ParseDuration("30m")
 	subscriber.OutTime = time.Now().Add(duration)
 	subscriber.SecretKey = uuid
-	signature := helpers.Md5(subscriber.Email + uuid + subscriber.OutTime.Format("20060102150405"))
+	signature := utility.Md5(subscriber.Email + uuid + subscriber.OutTime.Format("20060102150405"))
 	subscriber.Signature = signature
 	err := sendMail(subscriber.Email, "[Wblog]邮箱验证", fmt.Sprintf("%s/active?sid=%s", system.GetConfiguration().Domain, signature))
 	if err == nil {
@@ -132,8 +132,8 @@ func UnSubscribe(c *gin.Context) {
 }
 
 func GetUnSubcribeUrl(subscriber *models.Subscriber) (string, error) {
-	uuid := helpers.UUID()
-	signature := helpers.Md5(subscriber.Email + uuid)
+	uuid := utility.UUID()
+	signature := utility.Md5(subscriber.Email + uuid)
 	subscriber.SecretKey = uuid
 	subscriber.Signature = signature
 	err := subscriber.Update()

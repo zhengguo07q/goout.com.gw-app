@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 
-	"gw-app/helpers"
+	"gw-app/utility"
 	"gw-app/models"
 	"gw-app/system"
 )
@@ -80,7 +80,7 @@ func SignupPost(c *gin.Context) {
 	if len(user.Email) == 0 || len(user.Password) == 0 {
 		err = errors.New("email or password cannot be null.")
 	} else {
-		user.Password = helpers.Md5(user.Email + user.Password)
+		user.Password = utility.Md5(user.Email + user.Password)
 		err = user.Insert()
 		if err == nil {
 			c.JSON(http.StatusOK, gin.H{
@@ -105,7 +105,7 @@ func SigninPost(c *gin.Context) {
 		var user *models.User
 		user, err = models.GetUserByUsername(username)
 		fmt.Println(user, err)
-		if err == nil && user.Password == helpers.Md5(username+password) {
+		if err == nil && user.Password == utility.Md5(username+password) {
 			if !user.LockState {
 				s := sessions.Default(c)
 				s.Clear()

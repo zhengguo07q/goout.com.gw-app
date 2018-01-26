@@ -15,7 +15,7 @@ import (
 	"qiniupkg.com/api.v7/kodo"
 	"qiniupkg.com/api.v7/kodocli"
 
-	"gw-app/helpers"
+	"gw-app/utility"
 	"gw-app/system"
 )
 
@@ -45,7 +45,7 @@ func RestorePost(c *gin.Context) {
 			var data []byte
 			data, err = ioutil.ReadAll(resp.Body)
 			if err == nil {
-				data, err = helpers.Decrypt(data, system.GetConfiguration().BackupKey)
+				data, err = utility.Decrypt(data, system.GetConfiguration().BackupKey)
 				if err == nil {
 					err = ioutil.WriteFile(fileName, data, os.ModePerm)
 				}
@@ -69,7 +69,7 @@ func RestorePost(c *gin.Context) {
 
 func Backup() error {
 	var err error
-	if exists, _ := helpers.PathExists("wblog.db"); exists {
+	if exists, _ := utility.PathExists("wblog.db"); exists {
 		seelog.Debug("start backup...")
 
 		data, err := ioutil.ReadFile("wblog.db")
@@ -77,7 +77,7 @@ func Backup() error {
 			seelog.Error(err)
 			return err
 		}
-		encryptData, err := helpers.Encrypt(data, system.GetConfiguration().BackupKey)
+		encryptData, err := utility.Encrypt(data, system.GetConfiguration().BackupKey)
 		if err != nil {
 			seelog.Error(err)
 			return err

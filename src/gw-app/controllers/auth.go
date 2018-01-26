@@ -7,7 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	"gw-app/helpers"
+	"gw-app/utility"
 	"gw-app/system"
 )
 
@@ -15,7 +15,7 @@ func AuthGet(c *gin.Context) {
 	authType := c.Param("authType")
 
 	session := sessions.Default(c)
-	uuid := helpers.UUID()
+	uuid := utility.UUID()
 	session.Delete(SESSION_GITHUB_STATE)
 	session.Set(SESSION_GITHUB_STATE, uuid)
 	session.Save()

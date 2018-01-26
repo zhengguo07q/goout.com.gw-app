@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gw-app/controllers"
-	"gw-app/helpers"
+	"gw-app/utility"
 	"gw-app/models"
 	"gw-app/system"
 
@@ -161,13 +161,13 @@ func main() {
 func setTemplate(engine *gin.Engine) {
 
 	funcMap := template.FuncMap{
-		"dateFormat": helpers.DateFormat,
-		"substring":  helpers.Substring,
-		"isOdd":      helpers.IsOdd,
-		"isEven":     helpers.IsEven,
-		"truncate":   helpers.Truncate,
-		"add":        helpers.Add,
-		"listtag":    helpers.ListTag,
+		"dateFormat": utility.DateFormat,
+		"substring":  utility.Substring,
+		"isOdd":      utility.IsOdd,
+		"isEven":     utility.IsEven,
+		"truncate":   utility.Truncate,
+		"add":        utility.Add,
+		"listtag":    utility.ListTag,
 	}
 
 	engine.SetFuncMap(funcMap)

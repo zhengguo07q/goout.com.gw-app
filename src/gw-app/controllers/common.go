@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	
-	"gw-app/helpers"
+	"gw-app/utility"
 	"gw-app/system"
 )
 
@@ -28,7 +28,7 @@ func HandleMessage(c *gin.Context, message string) {
 
 func sendMail(to, subject, body string) error {
 	c := system.GetConfiguration()
-	return helpers.SendToMail(c.SmtpUsername, c.SmtpPassword, c.SmtpHost, to, subject, body, "html")
+	return utility.SendToMail(c.SmtpUsername, c.SmtpPassword, c.SmtpHost, to, subject, body, "html")
 }
 
 /*func __sendMail(to, subject, body string) error {
